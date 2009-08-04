@@ -20,6 +20,8 @@ class GitCommit(val author  : String,
         var moved_file : Boolean = false
         var diff       : String  = ""
         var diff_start : Boolean = false
+        var file_added : Int     = 0
+        var file_deleted : Int   = 0
 
         results._2.foreach(line => {
             if (line == null) {
@@ -32,6 +34,8 @@ class GitCommit(val author  : String,
                 to_file    = null
                 moved_file = false
                 diff_start = false
+                file_added = 0
+                file_deleted = 0
             }
             else if (line.startsWith("commit ")) {
                 // already scanned
@@ -46,6 +50,17 @@ class GitCommit(val author  : String,
                 // no data
             }
             else if (line.startsWith("diff --git")) {
+               if (files.length > 0) {
+                    files   += to_file
+                    changes += (to_file -> new FileChange(this, to_file, moved_file, file_added, file_deleted, diff))
+                    diff       = ""
+                    from_file  = null
+                    to_file    = null
+                    moved_file = false
+                    diff_start = false
+                    file_added = 0
+                    file_deleted = 0
+               }
                diff_start = true
             }
             else if (line.startsWith("---")) {
@@ -61,9 +76,11 @@ class GitCommit(val author  : String,
             }
             else if (diff_start && line.startsWith("-")) {
                deleted += 1
+               file_deleted += 1
             }
             else if (diff_start && line.startsWith("+")) {
                added += 1 
+               file_added += 1 
             }
             if (diff_start && line != null) {
                diff += line
@@ -79,6 +96,9 @@ class GitCommit(val author  : String,
         println("merger  = " + merger)
         println("added   = " + added)
         println("deleted = " + deleted)
+        for ((k,v) <- changes) {
+            v.print()
+        }
     }
 
 } // End class
