@@ -1,11 +1,11 @@
 
-class Scanner {
+class Scanner(val repo : String) {
 
    // private var tree : String
    private var commits : List[GitCommit]  = Nil
 
    def scan() = {
-      val results = new SubProcess().run("/usr/bin/git log")
+      val results = new SubProcess().run("/usr/bin/git log", repo)
       var hash    : String = null
       var comment : String = null
       var author  : String = null
@@ -16,14 +16,23 @@ class Scanner {
               {}
           else if (line.startsWith("commit "))
               hash = line.replace("commit ","")
-          else if (line.startsWith("Author "))
-              author = line.replace("Author ","")
-          else if (line.startsWith("Date "))
-              date = line.replace("Date ","")
-          else if (line != "\n")
-              comment = comment + line
+          else if (line.startsWith("Author:")) {
+              author = line.replace("Author:","")
+          }
+          else if (line.startsWith("Date:"))
+              date = line.replace("Date:","")
+          else if ((line != "\n") && (line != "")) {
+              if (comment == null) { comment = line }
+              else { comment = comment + "\n" + line }
+          }
           if ((author != null) && (hash != null) && (date != null) && (comment != null)) {
-              commits += new GitCommit(author,hash,date,comment)
+              commits += new GitCommit(
+                  Utils.lstrip(author),
+                  Utils.lstrip(hash),
+                  Utils.lstrip(date),
+                  Utils.lstrip(comment),
+                  repo
+              )
               author  = null
               hash    = null
               date    = null
@@ -32,7 +41,8 @@ class Scanner {
       })
 
       commits.foreach(c => {
-          println("Author = " + c.author.toString())
+          c.deepScan()
+          c.print()
       })
    }
 

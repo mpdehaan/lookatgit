@@ -1,5 +1,11 @@
+all:	compile
+
 compile:
 	/opt/scala/bin/scalac -classpath . -sourcepath . *.scala
 
-run:
-	/opt/scala/bin/scala App -classpath .
+test:
+	/opt/scala/bin/scala -classpath . App ~/cg/_cobbler
+
+clean:
+	rm *.class
+
