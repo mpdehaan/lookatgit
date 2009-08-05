@@ -18,3 +18,10 @@ Non-git repositories can be scanned by converting them to git.
 
 See also LICENSE and COPYING files for further info.
 
+Usage:
+
+install scala (from upstream) and openjdk
+edit Makefile to taste
+run "make compile test"
+
+
