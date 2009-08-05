@@ -50,7 +50,8 @@ class GitCommit(val author  : String,
                 // no data
             }
             else if (line.startsWith("diff --git")) {
-               if (files.length > 0) {
+               if (diff_start && to_file != null) {
+                    // add the previously recorded diff
                     files   += to_file
                     changes += (to_file -> new FileChange(this, to_file, moved_file, file_added, file_deleted, diff))
                     diff       = ""
