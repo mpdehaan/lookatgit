@@ -13,6 +13,7 @@ class GitCommit(val author  : String,
     var changes  : HashMap[String,FileChange] = new HashMap[String,FileChange]
 
     def deepScan() : Unit = {
+        println("Scanning " + hash)
         val results = new SubProcess().run("/usr/bin/git show " + hash, repo)
 
         var from_file  : String  = null

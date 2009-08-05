@@ -1,11 +1,9 @@
 
 class Scanner(val repo : String) {
 
-   // private var tree : String
-   private var commits : List[GitCommit]  = Nil
-
-   def scan() = {
+   def scan() : List[GitCommit] = {
       val results = new SubProcess().run("/usr/bin/git log", repo)
+      var commits : List[GitCommit]  = Nil
       var hash    : String = null
       var comment : String = null
       var author  : String = null
@@ -39,11 +37,8 @@ class Scanner(val repo : String) {
               comment = null
           }
       })
-
-      commits.foreach(c => {
-          c.deepScan()
-          c.print()
-      })
+      commits.foreach(c => { c.deepScan() })
+      return commits
    }
 
 }
