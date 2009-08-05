@@ -1,0 +1,20 @@
+Look At Git
+===========
+
+This project intends to scan and compare statistics in various git 
+repositories to determine commit patterns and other information 
+related to development and community contribution levels.  
+
+In this vein, it is similar to ohloh, but aims to collect 
+deeper statistics, run more frequently, and be 100% 
+open source.  It is not there yet.  Where possible, 
+lookatgit will leverage OSS statistics tools/libraries.
+
+See also: http://github.com/mpdehaan/ekg/tree/master for EKG,
+a mailing list scanner.  Adventurous folks may one day
+cross the streams.
+
+Non-git repositories can be scanned by converting them to git.
+
+See also LICENSE and COPYING files for further info.
+
