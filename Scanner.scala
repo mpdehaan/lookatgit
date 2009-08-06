@@ -41,7 +41,6 @@ class Scanner(val repo : String) {
               comment = null
           }
       })
-      commits.foreach(c => { c.deepScan() })
       return commits
    }
 

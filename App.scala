@@ -3,11 +3,9 @@ import scala.collection.mutable.HashMap
 import scala.util.Sorting
 import scala.actors._
 
-// FIXME: MainActor should be a seperate file
 class MainActor(val path : String) extends Actor {
 
    // pool of 3 actors for git scanning
-
    val deepScanners : List[GitCommitScanActor] = List(
        new GitCommitScanActor(),
        new GitCommitScanActor(),
@@ -18,6 +16,7 @@ class MainActor(val path : String) extends Actor {
 
        // the initial scan cannot be parallelized
        var commits = new Scanner(path).scan()
+       val commit_len = commits.length
       
        // send commits out for deeper scanning and get back a new list 
        // FIXME: abstract out a worker manager
@@ -31,16 +30,14 @@ class MainActor(val path : String) extends Actor {
        } 
 
        // wait to recieve all fully scanned commits
-       val commit_len = commits.length
        commits = Nil 
-       var running = true
-       while(running) {
+       while(commits.length < commit_len) {
             receive {
                  case DeepScanCommitResult(gc : GitCommit) => {
-                    println("scanning: " + commits.length + "/" + commit_len)
+                    if (commits.length % 25 == 0) 
+                        println("scanning: " + commits.length + "/" + commit_len)
                     commits += gc
                     if (commits.length == commit_len) {
-                        running = false
                         deepScanners.foreach(ds => ds ! DeepScansComplete())
                     }
                  }
@@ -49,12 +46,12 @@ class MainActor(val path : String) extends Actor {
        }
 
        // FIXME: this should be saved in reponame.csv
-
        println("=== PEOPLE REPORT ===")
        val personReport = new PersonReport(commits)
        println(personReport.csv_header())
-       val people = personReport.compute()
-       people.foreach(person => { println(person.to_csv()) })
+       personReport.compute().foreach(person => {
+            println(person.to_csv())
+       })
 
 
    }
@@ -65,8 +62,7 @@ object App {
       if (args.length < 1) {
           println("Must specify a local git repo path")
       }
-      val main = new MainActor(args(0))
-      main.start()
+      new MainActor(args(0)).start()
    }
 }
 
