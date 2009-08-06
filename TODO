@@ -19,4 +19,5 @@
      - what is the acceleration of the size of commits 
 - use aggregrate project data to produce comparisons
   - X/Y graph of various projects -- commit volume vs count
+  - (OR:  things like #avg commit volume vs # contributors)
 
