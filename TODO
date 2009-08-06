@@ -1,0 +1,22 @@
+- Parallelize computations on individual people
+- Generate reports based on files (new, in addition to people reports)
+- save CSV to actual CSV file named after the repo
+- consider aggregrate human stats across projects
+- sort the CSV just for nicer output
+- allow projects to scan to be listed in a config file (JSON)
+- output graphs using OSS graph tools
+- convert Date Strings into Date objects for better comparisons
+- generate more stats on a per person basis
+  - list of times between commits 
+    - average time and stdev
+  - standard deviation of lines added/removed (impact)
+- roll up reports on a per project basis
+  - report on how powerful is the long tail
+  - avg commit size / stdev
+  - avg commits month / stdev
+  - burnout/superstar indicator (rate of change)
+     - what is the acceleration of the rate of time between commits 
+     - what is the acceleration of the size of commits 
+- use aggregrate project data to produce comparisons
+  - X/Y graph of various projects -- commit volume vs count
+
