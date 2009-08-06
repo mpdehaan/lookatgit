@@ -2,6 +2,10 @@
 class Scanner(val repo : String) {
 
    def scan() : List[GitCommit] = {
+
+      val commit_ttl = new SubProcess().run("git log --pretty=oneline",repo)._2.length
+      println("Processing " + commit_ttl + " commits, this may take a while...")
+
       val results = new SubProcess().run("/usr/bin/git log", repo)
       var commits : List[GitCommit]  = Nil
       var hash    : String = null

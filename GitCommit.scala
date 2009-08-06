@@ -9,8 +9,7 @@ class GitCommit(val author  : String,
     var merger   : String       = null
     var diffs    : List[Diff]   = Nil
 
-    def deepScan() : Unit = {
-        println("Scanning " + hash)
+    def deepScan() : GitCommit  = {
         val results = new SubProcess().run("/usr/bin/git show " + hash, repo)
 
         var from_file    : String  = null
@@ -79,18 +78,7 @@ class GitCommit(val author  : String,
                diff_text += line
             }
         })
+        this
     }
 
-    def print() : Unit = {
-        println("author  = " + author)
-        println("hash    = " + hash)
-        println("date    = " + date)
-        // println("merger  = " + merger)
-        diffs.foreach(d => {
-            d.print()
-        })
-    }
-
-} // End class
-
-
+}

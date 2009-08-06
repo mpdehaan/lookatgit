@@ -8,15 +8,7 @@ class Person(var name : String) {
    var files   : HashSet[String] = new HashSet[String]
    var impact  : Int             = 0
 
-   def print() : Unit = {
-       println("name = " + name)
-       println("commits = " + commits)
-       //println("added = " + added)
-       println("removed = " + removed)
-       //println("files = " + files)
-   }
-
-   def +=(commit : GitCommit) {
+   def +=(commit : GitCommit) : Unit = {
        commits   += commit
        for(d <- commit.diffs) {
            added     += d.added
@@ -24,6 +16,10 @@ class Person(var name : String) {
            files      += d.path
        }
        impact = added + removed
+   }
+
+   def to_csv() : String = {
+       return List(name,commits.size,added,removed,impact).mkString(",")
    }
 
 }

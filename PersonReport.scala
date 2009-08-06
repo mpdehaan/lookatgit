@@ -16,5 +16,10 @@ class PersonReport(var commits : List[GitCommit]) {
        return peopleInfo.values
    }
 
+   def csv_header() : String = {
+       return "name,commits,added,removed,impact"
+   }
+
+
 }
 
