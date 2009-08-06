@@ -6,7 +6,6 @@ class PersonReport(var commits : List[GitCommit]) {
    def compute() : Iterator[Person] = {
        val peopleInfo : HashMap[String, Person] = new HashMap()
        commits.foreach(c => {
-            println("* processing commit = " + c.author)
             if (! peopleInfo.contains(c.author)) {
                 peopleInfo += (c.author -> new Person(c.author))
             }

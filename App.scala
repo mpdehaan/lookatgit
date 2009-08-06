@@ -35,7 +35,7 @@ class MainActor(val path : String) extends Actor {
             receive {
                  case DeepScanCommitResult(gc : GitCommit) => {
                     if (commits.length % 25 == 0) 
-                        println("scanning: " + commits.length + "/" + commit_len)
+                        System.err.println("scanning: " + commits.length + "/" + commit_len)
                     commits += gc
                     if (commits.length == commit_len) {
                         deepScanners.foreach(ds => ds ! DeepScansComplete())
@@ -46,7 +46,6 @@ class MainActor(val path : String) extends Actor {
        }
 
        // FIXME: this should be saved in reponame.csv
-       println("=== PEOPLE REPORT ===")
        val personReport = new PersonReport(commits)
        println(personReport.csv_header())
        personReport.compute().foreach(person => {
