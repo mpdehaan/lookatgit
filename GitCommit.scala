@@ -31,7 +31,7 @@ class GitCommit(val author  : String,
         results._2.foreach(line => {
             if (line == null) {
                 if (to_file != null) {
-                    diffs += new Diff(this, to_file, moved_file, file_added, file_removed, diff_text)
+                    diffs += new Diff(this, to_file, moved_file, file_added, file_removed, "") // diff_text)
                 }
                 start_new_diff()
             }
@@ -59,7 +59,8 @@ class GitCommit(val author  : String,
             else if (diff_text != "__UNDEFINED__" && line.startsWith("+"))
                file_added += 1 
             if (diff_text != "__UNDEFINED__" && line != null)
-               diff_text += line
+               //diff_text += line
+               {}
         })
         this
     }
