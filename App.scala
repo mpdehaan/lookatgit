@@ -34,7 +34,7 @@ class MainActor(val path : String) extends Actor {
    def act() {
 
        // the initial scan cannot be parallelized
-       var commits = new Scanner(path).scan()
+       var commits = new Scanner(new File(path)).scan()
        val commit_len = commits.length
       
        // send commits out for deeper scanning and get back a new list 

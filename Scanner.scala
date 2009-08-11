@@ -17,21 +17,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301  USA
 */
 
-class Scanner(val repo : String) {
+import java.io._
+
+class Scanner(val repo : File) {
+
+   val subprocess = new SubProcess()
 
    def scan() : List[GitCommit] = {
 
-      val commit_ttl = new SubProcess().run("git log --pretty=oneline",repo)._2.length
+      var commit_ttl : Int = 0
+      subprocess.run("git log --pretty=oneline",repo, (line:String) => {
+         commit_ttl += 1
+      })
       System.err.println("Processing " + commit_ttl + " commits, this may take a while...")
 
-      val results = new SubProcess().run("/usr/bin/git log", repo)
       var commits : List[GitCommit]  = Nil
       var hash    : String = null
       var comment : String = null
       var author  : String = null
       var date    : String = null
 
-      results._2.foreach(line => {
+      subprocess.run("/usr/bin/git log", repo, (line:String) => {
           if (line == null)
               {}
           else if (line.startsWith("commit "))
@@ -51,7 +57,8 @@ class Scanner(val repo : String) {
                   Utils.lstrip(hash),
                   Utils.lstrip(date),
                   Utils.lstrip(comment),
-                  repo
+                  repo,
+                  subprocess
               )
               author  = null
               hash    = null

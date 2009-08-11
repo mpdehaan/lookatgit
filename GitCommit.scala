@@ -18,19 +18,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 
 import scala.collection.mutable.HashMap
+import java.io._
 
-class GitCommit(val author  : String, 
-                val hash    : String, 
-                val date    : String, 
-                val comment : String,
-                val repo    : String) {
+class GitCommit(val author     : String, 
+                val hash       : String, 
+                val date       : String, 
+                val comment    : String,
+                val repo       : File,
+                val subprocess : SubProcess) {
 
     var merger   : String       = null
     var diffs    : List[Diff]   = Nil
 
     def deepScan() : GitCommit  = {
 
-        val results = new SubProcess().run("/usr/bin/git show " + hash, repo)
         var from_file    : String  = null
         var to_file      : String  = null
         var moved_file   : Boolean = false
@@ -47,7 +48,7 @@ class GitCommit(val author  : String,
             diff_text  = "__UNDEFINED__"
         }
 
-        results._2.foreach(line => {
+        subprocess.run("/usr/bin/git show "+hash,repo, (line:String) => {
             if (line == null) {
                 if (to_file != null) {
                     diffs += new Diff(this, to_file, moved_file, file_added, file_removed, "") // diff_text)

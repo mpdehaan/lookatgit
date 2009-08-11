@@ -9,6 +9,9 @@ test:
 test2:
 	/opt/scala/bin/scala -classpath . App ~/cg/_cobbler
 
+test3:
+	/opt/scala/bin/scala -classpath . App ~/cg/func
+
 clean:
 	rm *.class
 
