@@ -38,10 +38,11 @@ class Reporter
             puts "--------------------------------------------------"
         end
         sorted_authors = @authors.values().sort { |a,b| b.send(criteria) <=> a.send(criteria) }
+        counter = @@options.limit
         sorted_authors.each do |author|
             unless @@options.limit.nil?
-                @@options.limit -= 1
-                return if @@options.limit < 0
+                counter -= 1 
+                return if counter < 0
             end
             puts "#{author.name},#{author.lines_changed},#{author.lines_added},#{author.lines_removed},#{author.commit_ct}"
         end
@@ -57,10 +58,11 @@ class Reporter
             puts "------------------------------------------"
         end
         sorted_files = @files.values().sort { |a,b| b.send(criteria) <=> a.send(criteria) }
+        counter = @@options.limit
         sorted_files.each do |file|            
             unless @@options.limit.nil?
-                @@options.limit -= 1
-                return if @@options.limit < 0
+                counter -= 1
+                return if counter < 0
             end
             puts "#{file.filename},#{file.lines_changed},#{file.change_ct},#{file.author_ct},#{file.commit_ct}"
         end
