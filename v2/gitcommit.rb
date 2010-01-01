@@ -1,7 +1,7 @@
 require 'time'
 require 'open3'
 
-require 'gitfile'
+require 'gitchange'
 
 class GitCommit
 
@@ -9,14 +9,14 @@ class GitCommit
    attr_accessor :comments
    attr_accessor :author
    attr_accessor :time
-   attr_accessor :files
+   attr_accessor :changes
 
    def initialize(hash)
        @hash     = hash
        @comments = []
        @author   = nil
        @time     = nil
-       @files    = []
+       @changes  = []
    end
 
    def time=(time)
@@ -25,7 +25,7 @@ class GitCommit
    end
 
    def to_s()
-       filenames = @files.collect { |f| f.filename }.join(",")
+       filenames = @changes.collect { |f| f.filename }.join(",")
        "#{@hash} | #{@author} | #{@time} | #{filenames}"
    end
 

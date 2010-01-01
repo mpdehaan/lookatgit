@@ -1,6 +1,7 @@
 require 'open3'
+
 require 'gitcommit'
-require 'reporter'
+require 'gitauthor'
 
 class Scanner
    
@@ -15,17 +16,12 @@ class Scanner
        raise "cannot execute /usr/bin/git" unless File.executable?("/usr/bin/git")
        raise "#{repo} is not a git repo" unless File.directory?("#{repo}/.git")
        Dir.chdir(@repo) do 
-           puts "scanning..."
+           puts "scanning..." if @@options.verbose
            pre_scan()
-           puts "processing #{@commit_ct} commits..."
+           puts "processing #{@commit_ct} commits..." if @@options.verbose
            log_scan()
-           puts "generating report..."
+           puts "generating report..." if @@options.verbose
        end
-   end
-
-   def generate_report(format="csv")
-       reporter = Reporter.new(@commits)
-       reporter.report(format)
    end
 
    # count how many commits we have to process
@@ -47,11 +43,11 @@ class Scanner
                   @commits << commit unless commit.nil?
                   commit = GitCommit.new($1)
               elsif line =~ /^Author:\s*(.+)/
-                  commit.author = $1
+                  commit.author = GitAuthor.new($1)
               elsif line =~ /^Date:\s*(.+)/
                   commit.time = $1
               elsif line =~ /^(\d+)\s+(\d+)\s+(.+)/
-                  commit.files << GitFile.new(commit,$3,$1,$2)
+                  commit.changes << GitChange.new(commit,$3,$1,$2)
               elsif line =~ /^\s*(.+)/
                   commit.comments << $1 
               end
