@@ -1,3 +1,9 @@
+# this is the main entry point for the lookatgit program
+#
+# GPLv2.  for license information, see COPYING
+#
+# Michael DeHaan, <michael.dehaan@gmail.com>
+
 require 'optparse'
 require 'ostruct'
 
@@ -33,6 +39,7 @@ unless @@options.top_contributors_report or @@options.top_files_report
     exit 1
 end
 
+# FIXME: scan a list of repos from a configuration file?
 scanner = Scanner.new(@@options.repo)
 reporter = Reporter.new(scanner.commits)
 reporter.top_contributors_report() if @@options.top_contributors_report

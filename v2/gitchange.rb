@@ -1,6 +1,7 @@
 require 'time'
 require 'open3'
 
+# represents a change to a specific file in a commit.  Basically a partial changeset.
 class GitChange
 
    attr_reader   :commit
@@ -9,6 +10,7 @@ class GitChange
    attr_reader   :lines_removed
    attr_reader   :author
 
+   # commit here is a commit object, not the commit hash
    def initialize(commit, filename, lines_added, lines_removed)
        @commit = commit
        @author = commit.author

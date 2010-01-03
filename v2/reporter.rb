@@ -5,15 +5,19 @@ require 'open3'
 require 'gitfile'
 require 'utils'
 
+# walks through recorded GitCommit objects and builds stats on a per file and per author basis
+# and then generates CSV reports
 class Reporter
 
+   # constructed with the list of GitCommits
    def initialize(commits)
        @commits = commits
        @authors = {}
        @files   = {}
        calculate()
    end
-
+ 
+   # generate per-file and per-author statistics
    def calculate()
        @commits.each do |commit|
            commit.changes.each do |change|
@@ -29,6 +33,7 @@ class Reporter
        end
    end
 
+   # print a sorted list of statistics about the top contributors
    def top_contributors_report()
         criteria = @@options.sort
         criteria='commit_ct' if criteria.nil?
@@ -45,6 +50,7 @@ class Reporter
         end
    end
 
+   # print a sorted list of statistics about the top (most edited, etc) files in the repo
    def top_files_report()
         criteria = @@options.sort
         criteria='commit_ct' if criteria.nil?

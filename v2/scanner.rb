@@ -3,12 +3,14 @@ require 'open3'
 require 'gitcommit'
 require 'gitauthor'
 
+# runs through a git repo and records the individual commits for later usage with Reporter
 class Scanner
    
    attr_reader :repo
    attr_reader :commit_ct
    attr_reader :commits
    
+   # constructed with the path to a git repo
    def initialize(repo)
        @repo = repo
        @commits = []
