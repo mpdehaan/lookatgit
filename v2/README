@@ -55,7 +55,7 @@ Once we have that aggregrate data, we can then generate more complex reports wit
 
 To Do 
 =====
-* The top contributors report really should track average/std-dev time between commits.  Find who is AWOL.
+* std-dev between commits
 * We have a most active file report, aggregate into most active directories?
 * Attempt to combine usernames by ignoring email addresses or other fuzzy logic (must be optional)
 * Aggregrate stats.  What are the average stats for a project, so we can compare projects?

@@ -20,8 +20,7 @@ class GitCommit
    end
 
    def time=(time)
-       time = Time.parse(time) unless time.is_a?(Time)
-       @time = time
+       @time = Time.parse(time)
    end
 
    def to_s()

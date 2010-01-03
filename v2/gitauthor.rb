@@ -1,3 +1,5 @@
+require 'utils'
+
 class GitAuthor
 
    attr_reader   :name
@@ -14,6 +16,7 @@ class GitAuthor
        @files   = {}
        @lines_added = 0
        @lines_removed = 0
+       @now = Time.new()
    end
 
    def record_change(change, fileobj)
@@ -48,9 +51,16 @@ class GitAuthor
        "#{@name} | #{lines_added} added, #{lines_removed} removed | #{change_ct} changes, #{files_ct} files"
    end
 
-   #
-   # FIXME: add methods: top_files_edited_by_commits(limit_count), top_files_edited_by_lines(limit_ct) ???
-   #
+   def commit_frequency()
+       commits = @commits.values.sort { |a,b| a.time <=> a.time }
+       return 0 if commits.length < 2
+       return ("%0.2f" % ((@now.to_f - commits.first.time.to_f) / (commits.length * 24 * 60 * 60))).to_f
+   end
+   
+   def awol_time()
+       commits = @commits.values.sort { |a,b| a.time <=> b.time }
+       return ("%0.2f" % ((@now.to_f - commits.last.time.to_f) / (24 * 60 * 60))).to_f
+   end
 
 end
 

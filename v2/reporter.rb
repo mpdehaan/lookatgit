@@ -3,6 +3,7 @@ require 'open3'
 
 #require 'gitauthor'
 require 'gitfile'
+require 'utils'
 
 class Reporter
 
@@ -34,17 +35,13 @@ class Reporter
         if @@options.header
             puts "--------------------------------------------------"
             puts "TOP CONTRIBUTORS REPORT                           "
-            puts "name,lines_changed,lines_added,lines_removed,commit_ct"
+            puts "name,lines_changed,lines_added,lines_removed,commit_ct,awol_time,commit_frequency"
             puts "--------------------------------------------------"
         end
         sorted_authors = @authors.values().sort { |a,b| b.send(criteria) <=> a.send(criteria) }
         counter = @@options.limit
-        sorted_authors.each do |author|
-            unless @@options.limit.nil?
-                counter -= 1 
-                return if counter < 0
-            end
-            puts "#{author.name},#{author.lines_changed},#{author.lines_added},#{author.lines_removed},#{author.commit_ct}"
+        sorted_authors.each_with_limit(@@options.limit) do |a|
+            puts "#{a.name},#{a.lines_changed},#{a.lines_added},#{a.lines_removed},#{a.commit_ct},#{a.awol_time},#{a.commit_frequency}"
         end
    end
 
@@ -59,11 +56,7 @@ class Reporter
         end
         sorted_files = @files.values().sort { |a,b| b.send(criteria) <=> a.send(criteria) }
         counter = @@options.limit
-        sorted_files.each do |file|            
-            unless @@options.limit.nil?
-                counter -= 1
-                return if counter < 0
-            end
+        sorted_files.each_with_limit(@@options.limit) do |file|            
             puts "#{file.filename},#{file.lines_changed},#{file.change_ct},#{file.author_ct},#{file.commit_ct}"
         end
    end
