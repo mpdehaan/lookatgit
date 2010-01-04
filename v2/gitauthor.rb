@@ -62,7 +62,7 @@ class GitAuthor
 
    # how many days between commits?
    def commit_frequency()
-       commits = @commits.values.sort { |a,b| a.time <=> a.time }
+       commits = @commits.values.sort { |a,b| a.time <=> b.time }
        return 0 if commits.length < 2
        return ("%0.2f" % ((@now.to_f - commits.first.time.to_f) / (commits.length * 24 * 60 * 60))).to_f
    end
