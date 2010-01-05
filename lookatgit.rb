@@ -18,6 +18,7 @@ require 'reporter'
 @@options.top_files_report = false
 @@options.sort    = nil
 @@options.limit   = nil
+@@options.which   = nil
 
 # FIXME: clean up optparse usage
 ARGV.options do |opts|
@@ -29,6 +30,7 @@ ARGV.options do |opts|
     opts.on("-F", "--files", "Generate top files report") { |F| @@options.top_files_report = F }
     opts.on("-s", "--sort SORT", "Sort by field") { |s| @@options.sort = s }
     opts.on("-l", "--limit LIMIT", "Limit reports to X records") { |l| @@options.limit = l.to_i }
+    opts.on("-w", "--which WHICH", "Git version range spec, ex: 'HEAD HEAD~500") { |w| @@options.which = w }
     opts.separator("")
     opts.on_tail("-h","--help","Show this help message") { puts opts; exit }
     opts.parse!
@@ -40,7 +42,8 @@ unless @@options.top_contributors_report or @@options.top_files_report
 end
 
 # FIXME: scan a list of repos from a configuration file?
-scanner = Scanner.new(@@options.repo)
+# FIXME: convert globals into parameters
+scanner = Scanner.new(@@options.repo, @@options.which)
 reporter = Reporter.new(scanner.commits)
 reporter.top_contributors_report() if @@options.top_contributors_report
 reporter.top_files_report() if @@options.top_files_report

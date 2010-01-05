@@ -11,10 +11,12 @@ class Scanner
    attr_reader :commits
    
    # constructed with the path to a git repo
-   def initialize(repo)
+   # optional which specifies a git-revision range, ex: "HEAD..HEAD~50"
+   def initialize(repo, which=nil)
        @repo = repo
        @commits = []
        @commit_ct = 0
+       @which = which
        raise "cannot execute /usr/bin/git" unless File.executable?("/usr/bin/git")
        raise "#{repo} is not a git repo" unless File.directory?("#{repo}/.git")
        Dir.chdir(@repo) do 
@@ -39,7 +41,9 @@ class Scanner
    # scan the git logs 
    def log_scan()
        commit = nil
-       Open3.popen3("git log --numstat") do |stdin,stdout,stderr|
+       cmd = "git log --numstat #{@which}"
+       puts cmd if @@options.verbose
+       Open3.popen3(cmd) do |stdin,stdout,stderr|
            stdout.each_line do |line|
               if line =~/^commit\s*(.*)/
                   @commits << commit unless commit.nil?
