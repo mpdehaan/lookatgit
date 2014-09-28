@@ -6,6 +6,7 @@ It may also be used with other repos provided you first convert them to git, for
 
 Installation
 ============
+
 * install ruby
 
 Instructions
@@ -13,35 +14,35 @@ Instructions
 
 To see what options are available:
 
-$ ruby lookatgit.rb --help
+    $ ruby lookatgit.rb --help
 
 To scan the current working directory:
 
-$ ruby lookatgit.rb 
+    $ ruby lookatgit.rb 
 
 To scan a specific repo:
 
-$ ruby lookatgit.rb --repo /path/to/git/repo
+    $ ruby lookatgit.rb --repo /path/to/git/repo
 
 To generate the top contributors report
 
-$ ruby lookatgit.rb --topcontrib
+    $ ruby lookatgit.rb --topcontrib
 
 To generate the same report, with headers so humans can read it
 
-$ ruby lookatgit.rb --topcontrib --headers
+    $ ruby lookatgit.rb --topcontrib --headers
 
 To generate the top contributors report AND the top files report
 
-$ ruby lookatgit.rb --topcontrib --topfiles
+    $ ruby lookatgit.rb --topcontrib --topfiles
 
 To sort a report by a different set of criteria (as listed in the headers)
 
-$ ruby lookatgit.rb --topfiles --criteria lines_removed
+    $ ruby lookatgit.rb --topfiles --criteria lines_removed
 
 To only show 50 records in two reports
 
-$ ruby lookatgit.rb --topcontrib --headers --limit 50
+    $ ruby lookatgit.rb --topcontrib --headers --limit 50
 
 
 How The App Works
@@ -55,6 +56,7 @@ Once we have that aggregrate data, we can then generate more complex reports wit
 
 To Do 
 =====
+
 * std-dev between commits
 * We have a most active file report, aggregate into most active directories?
 * Attempt to combine usernames by ignoring email addresses or other fuzzy logic (must be optional)
@@ -68,6 +70,3 @@ Contributions
 =============
 
 Ideas for expanding lookatgit and generating reports are welcome.  Send in a patch!
-
-
-
