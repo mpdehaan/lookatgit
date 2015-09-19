@@ -4,6 +4,11 @@ LookAtGit
 LookAtGit is a program to extract commit statistics from a git source control repo.
 It may also be used with other repos provided you first convert them to git, for example, using git-svn.
 
+Note
+====
+
+This project hasn't been updated in many years, and is not up to date with current Ruby versions.  It most likely won't run with a modern Ruby, but may be interesting for reference.  There are also better libraries around now for processing git now that you should probably look into, depending on your language of choice.  This one created a lot of objects, which made it fine for most repos, but tended to not be so good on say, the Linux kernel.  Gitstats is one application that provides some basic graphs (and some other things, though not all of the stats provided here) that you may find interesting.
+
 Installation
 ============
 
